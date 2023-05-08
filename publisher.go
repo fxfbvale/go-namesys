@@ -2,10 +2,13 @@ package namesys
 
 import (
 	"context"
+	"os"
 	"strings"
 	"sync"
 	"time"
+	vale "log"
 
+	coreiface "github.com/ipfs/interface-go-ipfs-core"
 	"github.com/gogo/protobuf/proto"
 	ds "github.com/ipfs/go-datastore"
 	dsquery "github.com/ipfs/go-datastore/query"
@@ -20,6 +23,23 @@ import (
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
+
+
+var (
+	PublishLogger *vale.Logger
+	ResolveLogger *vale.Logger
+)
+
+func init() {
+	pubFile, err := os.OpenFile("publish.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	resFile, err := os.OpenFile("resolve.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		panic(err)
+	}
+
+	PublishLogger = vale.New(pubFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
+	ResolveLogger = vale.New(resFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
+}
 
 const ipnsPrefix = "/ipns/"
 
@@ -212,6 +232,11 @@ func PutRecordToRouting(ctx context.Context, r routing.ValueStore, k crypto.PubK
 	id, err := peer.IDFromPublicKey(k)
 	if err != nil {
 		return err
+	}
+
+	//valeLogs
+	if ctx.Value("ipns") != nil{
+		PublishLogger.Println("Version of record", coreiface.FormatKeyID(id), "is", entry.GetSequence())
 	}
 
 	go func() {

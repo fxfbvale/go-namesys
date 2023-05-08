@@ -1,5 +1,6 @@
 module github.com/ipfs/go-namesys
 
+
 require (
 	github.com/gogo/protobuf v1.3.2
 	github.com/hashicorp/golang-lru v0.5.4
