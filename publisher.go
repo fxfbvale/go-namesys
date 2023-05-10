@@ -2,19 +2,19 @@ package namesys
 
 import (
 	"context"
+	vale "log"
 	"os"
 	"strings"
 	"sync"
 	"time"
-	vale "log"
 
-	coreiface "github.com/ipfs/interface-go-ipfs-core"
 	"github.com/gogo/protobuf/proto"
 	ds "github.com/ipfs/go-datastore"
 	dsquery "github.com/ipfs/go-datastore/query"
 	"github.com/ipfs/go-ipns"
 	pb "github.com/ipfs/go-ipns/pb"
 	"github.com/ipfs/go-path"
+	coreiface "github.com/ipfs/interface-go-ipfs-core"
 	opts "github.com/ipfs/interface-go-ipfs-core/options/namesys"
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/peer"
@@ -27,7 +27,9 @@ import (
 
 var (
 	PublishLogger *vale.Logger
+	ErrPublishLogger *vale.Logger
 	ResolveLogger *vale.Logger
+	ErrResolveLogger *vale.Logger
 )
 
 func init() {
@@ -38,7 +40,9 @@ func init() {
 	}
 
 	PublishLogger = vale.New(pubFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
+	ErrPublishLogger = vale.New(pubFile, "ERROR: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
 	ResolveLogger = vale.New(resFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
+	ErrResolveLogger = vale.New(resFile, "ERROR: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
 }
 
 const ipnsPrefix = "/ipns/"
