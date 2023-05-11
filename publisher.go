@@ -240,7 +240,7 @@ func PutRecordToRouting(ctx context.Context, r routing.ValueStore, k crypto.PubK
 
 	//valeLogs
 	if ctx.Value("ipns") != nil{
-		PublishLogger.Println("Version of record", coreiface.FormatKeyID(id), "is", entry.GetSequence())
+		PublishLogger.Println("ID:", ctx.Value("id"), "Version of record", coreiface.FormatKeyID(id), "is", entry.GetSequence())
 	}
 
 	go func() {
