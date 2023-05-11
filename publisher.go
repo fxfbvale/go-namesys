@@ -39,10 +39,10 @@ func init() {
 		panic(err)
 	}
 
-	PublishLogger = vale.New(pubFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
-	ErrPublishLogger = vale.New(pubFile, "ERROR: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
-	ResolveLogger = vale.New(resFile, "INFO: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
-	ErrResolveLogger = vale.New(resFile, "ERROR: ", vale.Ldate|vale.Ltime|vale.Lshortfile)
+	PublishLogger = vale.New(pubFile, "INFO: ", vale.Ldate|vale.Lmicroseconds|vale.Lshortfile)
+	ErrPublishLogger = vale.New(pubFile, "ERROR: ", vale.Ldate|vale.Lmicroseconds|vale.Lshortfile)
+	ResolveLogger = vale.New(resFile, "INFO: ", vale.Ldate|vale.Lmicroseconds|vale.Lshortfile)
+	ErrResolveLogger = vale.New(resFile, "ERROR: ", vale.Ldate|vale.Lmicroseconds|vale.Lshortfile)
 }
 
 const ipnsPrefix = "/ipns/"
